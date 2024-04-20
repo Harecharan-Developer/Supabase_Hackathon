@@ -1,6 +1,4 @@
-Sure, here's a sample README file with instructions on how to set up the project and run it locally:
 
----
 
 # Invoice Management Tool
 
@@ -53,6 +51,4 @@ This will start a local server, and you can access the application in your web b
 
 You can also view a hosted example of the Invoice Management Tool [here](https://example.com).
 
----
 
-Feel free to customize this README file according to your project's specific requirements and instructions.
