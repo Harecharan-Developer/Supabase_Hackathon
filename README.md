@@ -49,6 +49,6 @@ This will start a local server, and you can access the application in your web b
 
 ### Hosted Example
 
-You can also view a hosted example of the Invoice Management Tool [here](https://example.com).
+You can also view a hosted example of the Invoice Management Tool [here](https://supabase-hackathon.onrender.com).
 
 
