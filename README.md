@@ -3,10 +3,14 @@
 # Invoice Management Tool
 
 Welcome to the Invoice Management Tool! This tool allows users to efficiently manage their invoices using an AI-powered platform.
-
+## DEMO:
+visit my demo website [here](https://share.streamlit.io/harecharan-developer/supabase_hackathon/main/app.py)
+username = "user"
+passowrd = "password"
 ## Getting Started
 
 To get started with the Invoice Management Tool, follow these steps:
+
 
 ### Prerequisites
 
@@ -46,6 +50,8 @@ streamlit run app.py
 ```
 
 This will start a local server, and you can access the application in your web browser by navigating to `http://localhost:8501`.
+
+To experience the analytics shown, login as username as "user" and password as "password", as I have already uploaded some example invoices in it
 
 ### Hosted Example
 

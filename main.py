@@ -1,3 +1,4 @@
+import requests
 
 import streamlit as st
 from streamlit_option_menu import option_menu
@@ -18,14 +19,24 @@ from faker import Faker
 import random
 from datetime import date
 import calendar
+import json
 
 load_dotenv()
 
-CREDENTIALS_JSON = os.getenv('CREDENTIALS_JSON')
-SHEET_KEY=os.getenv('SHEET_KEY')
+# Get the path to the secret file from the environment variable
+secret_file_path = os.getenv('CREDENTIALS_JSON')
+
+# Check if the secret file exists
+if secret_file_path:
+    # Read the content of the secret file
+    with open(secret_file_path, 'r') as f:
+        credentials_data = json.load(f)
+        CREDENTIALS_JSON = credentials_data.get('CREDENTIALS_JSON')
+SHEET_KEY=os.getenv('SHEET_KEY')     
 GEMINI_KEY=os.getenv('GEMINI_KEY')
 SUPABASE_KEY=os.getenv('SUPERBASE_KEY')
 SUPABASE_URL=os.getenv('SUPERBASE_URL')
+BUCKET_URL=os.getenv('BUCKET_URL')
 
 supabase : Client = create_client(SUPABASE_URL,SUPABASE_KEY)
 
@@ -110,11 +121,24 @@ class gemini_model:
             response = response.replace("python", "")
             details = self.extract_invoice_details(response)
             updated_details=self.display_invoice_fields(details)
+        
 
             if st.button("Submit"):
                 self.upload_to_database(updated_details)
                 st.write("Successfully uploaded")
+# Button for uploading to Supabase Buckets
+                if st.button("Upload to Database"):
+                    user_id = st.session_state.user_id  # Assuming you have the user_id stored in session_state
+                    invoice_id = updated_details['invoice_id']  # Assuming 'invoice_id' is a key in updated_details
+                    file_name = f"{user_id}_{invoice_id}.pdf" if uploaded_file.type == 'application/pdf' else f"{user_id}_{invoice_id}.png"
+                    bucket_url = self.upload_to_supabase_bucket(uploaded_file, file_name)
+                    st.write(f"File uploaded to Supabase Buckets with URL: {bucket_url}")
 
+
+
+    def upload_to_supabase_bucket(file, file_name):
+        resp=supabase.storage().from_("invoice_bucket").upload(file,file)
+        print(resp)
     def extract_invoice_details(self, response):
         details = []
         respons_lst = response.split("\n")
@@ -302,7 +326,7 @@ class user_interface:
             margin-bottom: 20px;
         }
         .user-info h3 {
-            color: #333;
+            color: green;
         }
         .user-info p {
             margin-bottom: 10px;
@@ -326,7 +350,7 @@ class user_interface:
     def home_page(self):
         st.title("Welcome to Invoice Management Tool")
         st.write("Efficiently manage your invoices with our user-friendly and intuitive platform. Say goodbye to the hassle of manual invoicing and embrace the simplicity of our streamlined solution.")
-        st.write("If I win(unlikely though) I would like to be compensated with an internshp instead.As for the airpods , i would like its value  to be donated to a charity or somewhere :)  ")
+        st.write("If I win(unlikely though) I would like to be compensated with an internship instead.As for the airpods , I would like its value  to be donated to a charity or somewhere :)  ")
         # Custom CSS for the divs
         custom_css = """
         <style>
@@ -398,8 +422,7 @@ class user_interface:
             </div>
             <div class="card buckets">
                 <h3>Supabase Buckets</h3>
-                <p>Planning to use Supabase Buckets for enhanced data management.By storing important details
-                users can comfortably access their files form anywhere form any device</p>
+                <p>I have tried to use Supabase Buckets for enhanced data management.But its not completely working and I need help guys ;(</p>
             </div>
             
         </div>
