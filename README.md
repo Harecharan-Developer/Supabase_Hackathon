@@ -55,6 +55,6 @@ To experience the analytics shown, login as username as "user" and password as "
 
 ### Hosted Example
 
-You can also view a hosted example of the Invoice Management Tool [here](https://example.com).
+You can also view a hosted example of the Invoice Management Tool [here](https://supabase-hackathon.onrender.com).
 
 
